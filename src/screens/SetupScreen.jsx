@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import './SetupScreen.css';
 import { xtreamApi } from '../services/xtream';
 import { getOwnServers } from '../services/serverConfig';
+import { checkActivation, isUsable } from '../services/activation';
 import { toast } from '../components/Toast';
 import { addProfile, deleteProfile as removeProfile, getDecryptedProfile, getLastUsedProfile, getStoredProfiles, migrateToEncrypted, setLastUsedProfile } from '../utils/storage';
 
@@ -80,6 +81,24 @@ export default function SetupScreen({ onConnect, autoLogin = true }) {
             }
 
             const finalCreds = { ...creds, url: workingUrl };
+
+            // Aktivasyon/lisans kontrolü — süresi dolmuş cihazlar içeri giremez
+            try {
+                const activation = await checkActivation();
+                if (!isUsable(activation)) {
+                    toast.error('Deneme süreniz doldu — devam etmek için aktivasyon gerekli');
+                    return false;
+                }
+                if (activation.status === 'trial') {
+                    const hoursLeft = Math.max(0, Math.round((new Date(activation.expires_at) - new Date()) / 3600000));
+                    toast.info?.(`Deneme modu — ${hoursLeft} saat kaldı`);
+                }
+            } catch (actErr) {
+                console.error('Activation check failed:', actErr);
+                // Aktivasyon servisi çökerse kullanıcıyı dışarıda bırakma —
+                // ağ sorunu yüzünden erişimi engellemeyelim, sadece logla.
+            }
+
             await addProfile(finalCreds);
             await setLastUsedProfile(finalCreds);
             onConnect(finalCreds);
