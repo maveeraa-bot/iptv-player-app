@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { useHlsPlayer } from '../hooks/useHlsPlayer';
+import { usePlaybackEngine } from '../hooks/usePlaybackEngine';
 import { getPlaybackSources } from '../services/playback';
 import { clearWatchProgress, getWatchProgress, markAsWatched, saveWatchProgress } from '../utils/watchProgress';
 import './MiniPlayer.css';
@@ -10,7 +10,6 @@ export default function MiniPlayer({ item, onExpand, onClose, onPlayNext }) {
     const [isDragging, setIsDragging] = useState(false);
     const [position, setPosition] = useState({ x: 16, y: 100 });
     const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-    const [useCompatibleSource, setUseCompatibleSource] = useState(false);
     const videoRef = useRef(null);
     const lastProgressSaveRef = useRef(0);
 
@@ -19,21 +18,18 @@ export default function MiniPlayer({ item, onExpand, onClose, onPlayNext }) {
         type: item?.type,
         extension: item?.extension,
     }), [item?.extension, item?.stream_id, item?.type]);
-    const streamUrl = useCompatibleSource ? playbackSources.compatible : playbackSources.original;
+    const candidateStreamUrls = useMemo(
+        () => [playbackSources.original, playbackSources.compatible].filter(Boolean),
+        [playbackSources.original, playbackSources.compatible],
+    );
 
     const handlePlaybackError = useCallback(() => {
-        if (!useCompatibleSource && playbackSources.compatible !== playbackSources.original) {
-            setUseCompatibleSource(true);
-        } else {
-            setPlaying(false);
-        }
-    }, [playbackSources.compatible, playbackSources.original, useCompatibleSource]);
+        setPlaying(false);
+    }, []);
 
-    useHlsPlayer(videoRef, streamUrl, {
+    usePlaybackEngine(videoRef, candidateStreamUrls, {
         onFatalError: handlePlaybackError,
     });
-
-    useEffect(() => setUseCompatibleSource(false), [item?.id]);
 
     useEffect(() => () => {
         const video = videoRef.current;

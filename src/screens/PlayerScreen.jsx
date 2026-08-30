@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { toast } from '../components/Toast';
-import { useHlsPlayer } from '../hooks/useHlsPlayer';
+import { usePlaybackEngine } from '../hooks/usePlaybackEngine';
 import { getPlaybackSources } from '../services/playback';
 import { canUseNativeAndroidPlayer, openNativeAndroidPlayer } from '../services/nativePlayer';
 import { clearWatchProgress, getWatchProgress, markAsWatched, saveWatchProgress } from '../utils/watchProgress';
@@ -104,32 +104,27 @@ export default function PlayerScreen({ item, onBack, onPlayNext }) {
     const itemId = item?.id;
     const itemType = item?.type;
     const positionKey = itemId ? `aura_pos_${itemId}` : null;
-    const streamUrl = transcodeFallback ? playbackSources.compatible : playbackSources.original;
+    const candidateStreamUrls = useMemo(() => {
+        const urls = transcodeFallback
+            ? [playbackSources.compatible, playbackSources.original]
+            : [playbackSources.original, playbackSources.compatible];
+        return urls.filter(Boolean);
+    }, [playbackSources.original, playbackSources.compatible, transcodeFallback]);
     const shouldUseNativePlayer = canUseNativeAndroidPlayer() && !nativePlayerFailed;
     const startIsReady = startDecision.itemId === itemId && startDecision.status === 'ready';
 
     const handlePlaybackFailure = useCallback((detail = '') => {
         setIsBuffering(false);
-
-        if (!transcodeFallback && playbackSources.compatible && playbackSources.compatible !== playbackSources.original) {
-            setTranscodeFallback(true);
-            setStreamError(false);
-            setErrorDetail('');
-            setPlaying(true);
-            toast.info('Trying a compatible stream source…');
-            return;
-        }
-
         setPlaying(false);
         setStreamError(true);
         setErrorDetail(detail);
-    }, [playbackSources.compatible, playbackSources.original, transcodeFallback]);
+    }, []);
 
     const onHlsFatalError = useCallback(
-        (error) => handlePlaybackFailure(error?.details || 'The HLS stream could not be loaded.'),
+        (error) => handlePlaybackFailure(error?.details || 'The stream could not be loaded.'),
         [handlePlaybackFailure],
     );
-    useHlsPlayer(videoRef, shouldUseNativePlayer ? null : streamUrl, { onFatalError: onHlsFatalError });
+    usePlaybackEngine(videoRef, shouldUseNativePlayer ? null : candidateStreamUrls, { onFatalError: onHlsFatalError });
 
     useEffect(() => {
         let preferCompatible = false;
@@ -338,7 +333,7 @@ export default function PlayerScreen({ item, onBack, onPlayNext }) {
                 videoRef.current.pause();
             }
         }
-    }, [playing, shouldUseNativePlayer, startIsReady, streamError, streamUrl]);
+    }, [playing, shouldUseNativePlayer, startIsReady, streamError, candidateStreamUrls]);
 
     // Volume sync
     useEffect(() => {
