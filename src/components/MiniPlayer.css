@@ -79,6 +79,6 @@
     bottom: 0;
     left: 0;
     height: 3px;
-    background: linear-gradient(90deg, #4f7dff, #8b5cf6);
+    background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
     cursor: pointer;
 }

@@ -22,7 +22,7 @@
 .setup-logo-mark {
     width: 64px;
     height: 64px;
-    background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+    background: radial-gradient(circle at 30% 30%, var(--accent-strong) 0%, var(--accent) 60%, #b3781f 100%);
     border-radius: 18px;
     margin-bottom: 12px;
     display: flex;
@@ -128,7 +128,7 @@
     right: 18px;
     width: 18px;
     height: 18px;
-    background: #ef4444;
+    background: var(--live-red);
     border-radius: 50%;
     display: flex;
     align-items: center;

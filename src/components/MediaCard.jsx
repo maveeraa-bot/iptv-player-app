@@ -91,7 +91,7 @@ export default function MediaCard({ item, onSelect, onPlay, showProgress = false
             onPointerCancel={cancelGesture}
             onLostPointerCapture={cancelGesture}
         >
-            <div className="media-card-img-wrap">
+            <div className="media-card-img-wrap" data-type={item.type}>
                 <img
                     className="media-card-img"
                     src={item.poster}
