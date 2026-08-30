@@ -1,30 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Bebas+Neue&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-/* ─── Design Tokens ─── "Tuner" identity: warm graphite + analog dial amber ─── */
+/* ─── Design Tokens ─── Netflix-style: true near-black + signal red ─── */
 :root {
-  /* Warm near-black, like a switched-off CRT/radio dial glass, not flat #000 */
-  --bg-base: #0c0a08;
-  --bg-surface: rgba(255, 245, 230, 0.045);
-  --bg-surface-hover: rgba(255, 245, 230, 0.08);
-  --bg-card: #17130f;
-  --glass-border: rgba(255, 245, 230, 0.09);
-  --glass-border-strong: rgba(255, 245, 230, 0.17);
+  --bg-base: #0a0a0a;
+  --bg-surface: rgba(255, 255, 255, 0.05);
+  --bg-surface-hover: rgba(255, 255, 255, 0.09);
+  --bg-card: #1a1a1a;
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-border-strong: rgba(255, 255, 255, 0.18);
 
-  /* Primary: analog tuner-dial amber (replaces generic SaaS blue) */
-  --accent: #f2a93b;
-  --accent-glow: rgba(242, 169, 59, 0.35);
-  --accent-strong: #ffc266;
+  /* Primary: signal red — buttons, focus, CTAs */
+  --accent: #e4222e;
+  --accent-glow: rgba(228, 34, 46, 0.35);
+  --accent-strong: #ff3b30;
 
-  /* Secondary: old-phosphor-screen teal, used sparingly for alt states */
-  --accent-secondary: #3fa9a0;
-  --accent-secondary-glow: rgba(63, 169, 160, 0.30);
+  /* Secondary: kept neutral so red stays the one bold color in the UI */
+  --accent-secondary: #ff5b52;
+  --accent-secondary-glow: rgba(255, 91, 82, 0.30);
 
-  /* Functional broadcast red — kept for the universal "LIVE" convention only */
-  --live-red: #e6394a;
+  /* LIVE badge — same red family, tuned brighter to pop on small badges */
+  --live-red: #ff3b30;
 
-  --text-primary: rgba(255, 250, 240, 0.96);
-  --text-secondary: rgba(255, 250, 240, 0.52);
-  --text-tertiary: rgba(255, 250, 240, 0.30);
+  --text-primary: rgba(255, 255, 255, 0.97);
+  --text-secondary: rgba(255, 255, 255, 0.55);
+  --text-tertiary: rgba(255, 255, 255, 0.32);
 
   --radius-sm: 10px;
   --radius-md: 16px;
@@ -35,9 +34,10 @@
   --blur-lg: blur(40px);
   --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Body / display / utility type roles — deliberately not the same face for all three */
-  --font: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display: 'Space Grotesk', 'Manrope', sans-serif;
+  /* Body: neutral, highly-legible grotesque. Display: bold condensed
+     face for hero/section titles — the poster-wall, marquee feel. */
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Bebas Neue', 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 }
 

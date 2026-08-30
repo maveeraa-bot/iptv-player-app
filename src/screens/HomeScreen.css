@@ -27,7 +27,7 @@
 .home-topbar-logo-mark {
     width: 32px;
     height: 32px;
-    background: radial-gradient(circle at 30% 30%, var(--accent-strong) 0%, var(--accent) 55%, #b3781f 100%);
+    background: radial-gradient(circle at 30% 30%, var(--accent-strong) 0%, var(--accent) 55%, #8a0f17 100%);
     border-radius: 9px;
     display: flex;
     align-items: center;
@@ -42,9 +42,10 @@
 
 .home-topbar-logo-name {
     font-family: var(--font-display);
-    font-size: 19px;
-    font-weight: 700;
-    letter-spacing: -0.1px;
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
     color: var(--text-primary);
 }
 
@@ -82,10 +83,11 @@
 
 .home-greeting h2 {
     font-family: var(--font-display);
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-    line-height: 1.15;
+    font-size: 34px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    line-height: 1.05;
 }
 
 .home-greeting p {
@@ -199,9 +201,10 @@
 
 .category-title {
     font-family: var(--font-display);
-    font-size: 17px;
-    font-weight: 600;
-    letter-spacing: -0.1px;
+    font-size: 21px;
+    font-weight: 400;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
 }
 
 .category-see-all {
@@ -267,7 +270,7 @@
     align-items: center;
     justify-content: center;
     padding: 16px;
-    background: linear-gradient(160deg, #1c1712 0%, #14100c 100%);
+    background: linear-gradient(160deg, #1e1e1e 0%, #141414 100%);
 }
 
 .media-card-img-wrap[data-type="live"] .media-card-img {
